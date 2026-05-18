@@ -1,0 +1,10 @@
+{
+  "name": "kiteindex-pro",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsup",
+    "start": "node dist/index.js"
+  }
+}
