@@ -21,20 +21,29 @@ Production-grade indexer + GraphQL API for Kite Mainnet.
 
 ## API
 
+Production: https://kiteindex-pro-app.vercel.app
+
 ```bash
 # List transfers
-curl -H "X-API-Key: your_key" https://api.kiteindex.xyz/v1/transfers
+curl -H "X-API-Key: your_key" https://kiteindex-pro-app.vercel.app/api/v1/transfers
 
 # Get bridge activity
-curl -H "X-API-Key: your_key" https://api.kiteindex.xyz/v1/bridges
+curl -H "X-API-Key: your_key" https://kiteindex-pro-app.vercel.app/api/v1/bridges
 
 # Check usage
-curl -H "X-API-Key: your_key" https://api.kiteindex.xyz/v1/usage
+curl -H "X-API-Key: your_key" https://kiteindex-pro-app.vercel.app/api/v1/usage
 ```
+
+## Deployment
+
+- **Production:** https://kiteindex-pro-app.vercel.app
+- **Host:** Vercel project `kiteindex-pro-app`
+- **Status:** landing page, API-key guard, and connector-required API responses verified on 2026-05-23.
+- **Data:** live API responses require `KITEINDEX_TRANSFERS_URL`, `KITEINDEX_BRIDGES_URL`, `KITEINDEX_STAKING_URL`, and `KITEINDEX_USAGE_URL`.
 
 ## Development
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
