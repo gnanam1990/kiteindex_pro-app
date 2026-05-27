@@ -5,6 +5,9 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "KiteIndex Pro",
   description: "Production-grade Kite Mainnet indexer and API connector status.",
+  icons: {
+    icon: "/brand/kite-logo-mark-beige.png",
+  },
 };
 
 export default function RootLayout({
@@ -16,6 +19,7 @@ export default function RootLayout({
         <div className="shell">
           <header className="topbar">
             <Link href="/" className="brand">
+              <img className="brand-logo" src="/brand/kite-logo-beige.png" alt="Kite" />
               KiteIndex Pro
             </Link>
             <nav className="nav" aria-label="Primary">
