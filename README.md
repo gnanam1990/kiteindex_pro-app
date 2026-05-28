@@ -40,6 +40,7 @@ curl -H "X-API-Key: your_key" https://kiteindex-pro-app.vercel.app/api/v1/usage
 - **Host:** Vercel project `kiteindex-pro-app`
 - **Status:** landing page, API-key guard, and connector-required API responses verified on 2026-05-23.
 - **Data:** live API responses require `KITEINDEX_TRANSFERS_URL`, `KITEINDEX_BRIDGES_URL`, `KITEINDEX_STAKING_URL`, and `KITEINDEX_USAGE_URL`.
+- **Auth:** production API requests require either `KITEINDEX_PRO_API_KEY_HASHES` (comma-separated SHA-256 hashes) or `KITEINDEX_PRO_API_KEYS` (comma-separated raw keys). The `demo` key is accepted only outside production.
 
 ## Development
 

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { readApiKey } from "@/src/middleware/api-key";
+import { validateApiKey } from "@/src/middleware/api-key";
 import { ENDPOINTS, proxyEndpoint, type EndpointName } from "@/src/service";
 
 export async function GET(
@@ -11,12 +11,15 @@ export async function GET(
     return NextResponse.json({ error: "Unknown endpoint" }, { status: 404 });
   }
 
-  const apiKey = readApiKey(request);
-  if (!apiKey) {
-    return NextResponse.json({ error: "Missing API key" }, { status: 401 });
+  const apiKey = validateApiKey(request);
+  if (!apiKey.ok) {
+    return NextResponse.json(
+      { error: apiKey.error, code: apiKey.code },
+      { status: apiKey.status }
+    );
   }
 
-  const result = await proxyEndpoint(endpoint, request, apiKey);
+  const result = await proxyEndpoint(endpoint, request, apiKey.apiKey);
   return NextResponse.json(result.body, {
     status: result.status,
     headers: {
