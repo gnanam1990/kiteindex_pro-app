@@ -23,7 +23,10 @@ export async function GET(
   return NextResponse.json(result.body, {
     status: result.status,
     headers: {
-      "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300",
+      // Responses vary by API key (sent via header, so it is not part of the
+      // URL cache key). A shared/CDN cache would serve one caller's
+      // authenticated data to another. Keep caching private to the client.
+      "Cache-Control": "private, max-age=60, stale-while-revalidate=300",
     },
   });
 }

@@ -78,15 +78,47 @@ export async function proxyEndpoint(endpoint: EndpointName, request: Request, ap
   const upstreamUrl = new URL(upstream);
   requestUrl.searchParams.forEach((value, key) => upstreamUrl.searchParams.set(key, value));
 
-  const response = await fetch(upstreamUrl, {
-    headers: {
-      "X-API-Key": apiKey,
-    },
-    next: { revalidate: 60 },
-  });
+  let response: Response;
+  try {
+    response = await fetch(upstreamUrl, {
+      headers: {
+        "X-API-Key": apiKey,
+      },
+      next: { revalidate: 60 },
+    });
+  } catch {
+    return {
+      status: 502,
+      body: {
+        error: "Upstream request failed",
+        message: `${config.env} did not respond.`,
+      },
+    };
+  }
+
+  // Upstream may return a non-JSON body (e.g. an HTML gateway error page on a
+  // 5xx, or an empty body). Parsing it blindly with response.json() would throw
+  // and surface as an opaque 500 from this API, so handle it defensively.
+  const text = await response.text();
+  let body: unknown;
+  if (text === "") {
+    body = null;
+  } else {
+    try {
+      body = JSON.parse(text);
+    } catch {
+      return {
+        status: response.ok ? 502 : response.status,
+        body: {
+          error: "Upstream returned a non-JSON response",
+          message: `${config.env} returned an unexpected response.`,
+        },
+      };
+    }
+  }
 
   return {
     status: response.status,
-    body: await response.json(),
+    body,
   };
 }
